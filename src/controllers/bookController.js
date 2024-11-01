@@ -1,28 +1,54 @@
-const Book = require("../models/book");
-const { errorMsg, errorName } = require("./utils");
+const Book = require("../models/Book");
 
-const BookController = {};
-
-BookController.create = async (req, res, next) => {
+exports.getAllBooks = async (req, res) => {
   try {
-    const { title, content } = req.body;
-
-    if (!title || !content) {
-      throw { name: errorName.BAD_REQUEST, message: errorMsg.WRONG_INPUT };
-    }
-    const book = new Book({
-      title,
-      penulis,
-      stok,
-      kategori,
-      sampul,
-    });
-
-    await book.save();
-    res.status(201).json(note);
+    const books = await Book.find().populate("authorId");
+    res.status(200).json(books);
   } catch (error) {
-    next(error);
+    res.status(500).json({ message: error.message });
   }
 };
 
-module.exports = BookController;
+exports.getBookById = async (req, res) => {
+  try {
+    const book = await Book.findById(req.params.id).populate("authorId");
+    if (!book) return res.status(404).json({ message: "Book not found" });
+    res.status(200).json(book);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.createBook = async (req, res) => {
+  const book = new Book(req.body);
+  try {
+    const savedBook = await book.save();
+    res.status(200).json(savedBook);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.updateBookById = async (req, res) => {
+  try {
+    const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    if (!updatedBook)
+      return res.status(404).json({ message: "Book not found" });
+    res.status(200).json();
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.deleteBookById = async (req, res) => {
+  try {
+    const deletedBook = await Book.findByIdAndDelete(req.params.id);
+    if (!deletedBook)
+      return res.status(404).json({ message: "Book not found" });
+    res.status(200).json({ message: "Book deleted succesfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.messsage });
+  }
+};
