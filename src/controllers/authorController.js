@@ -31,12 +31,17 @@ exports.createAuthor = async (req, res) => {
 
 exports.updateAuthorById = async (req, res) => {
   try {
-    const updatedAuthor = await Author.findByIdAndUpdate(req.params, req.body, {
+    const authorId = req.params.id;
+    const updatedAuthor = await Author.findByIdAndUpdate(authorId, req.body, {
       new: true,
+      runValidators: true,
     });
-    if (!updatedAuthor)
-      return res.status(404).json({ message: "author not found" });
-    res.status(200).json();
+
+    if (!updatedAuthor) {
+      return res.status(404).json({ message: "Penulis tidak ditemukan" });
+    }
+
+    res.status(200).json(updatedAuthor);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -44,7 +49,8 @@ exports.updateAuthorById = async (req, res) => {
 
 exports.deleteAuthorById = async (req, res) => {
   try {
-    const deletedAuthor = await Author.findByIdAndDelete(req.params);
+    const authorId = req.params.id;
+    const deletedAuthor = await Author.findByIdAndDelete(authorId);
     if (!deletedAuthor)
       return res.status(404).json({ message: "Author not found" });
     res.status(200).json({ message: "Author deleted successfully" });

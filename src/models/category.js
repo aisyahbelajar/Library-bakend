@@ -7,4 +7,14 @@ const categorySchema = new mongoose.Schema({
   deletedAt: { type: Date },
 });
 
+categorySchema.pre("save", function (next) {
+  this.updatedAt = Date.now();
+  next();
+});
+
+categorySchema.pre("findOneAndUpdate", function (next) {
+  this.set({ updatedAt: Date.now() });
+  next();
+});
+
 module.exports = mongoose.model("Category", categorySchema);

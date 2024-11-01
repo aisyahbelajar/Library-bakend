@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const bookSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  desciption: { type: String, required: true },
+  description: { type: String, required: true },
   summary: { type: String, required: true },
   stocks: [
     {
@@ -15,6 +15,15 @@ const bookSchema = new mongoose.Schema({
     ref: "Author",
     required: true,
   },
+});
+
+bookSchema.pre("save", function (next) {
+  this.updatedAt = Date.now();
+  next();
+});
+bookSchema.pre("findOneAndUpdate", function (next) {
+  this.set({ updatedAt: Date.now() });
+  next();
 });
 
 module.exports = mongoose.model("Book", bookSchema);

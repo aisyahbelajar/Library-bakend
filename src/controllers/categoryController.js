@@ -32,23 +32,26 @@ exports.createCategory = async (req, res) => {
 
 exports.updateCategoryById = async (req, res) => {
   try {
+    const categoryId = req.params.id;
     const updatedCategory = await Category.findByIdandUpdate(
-      req.params,
+      categoryId,
       req.body,
       {
         new: true,
+        updatedAt: Date.now,
       }
     );
     if (!updatedCategory)
       return res.status(404).json({ message: "category not found" });
-    res.status(200).json();
+    res.status(200).json(updatedCategory);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 };
 exports.deleteCategoryById = async (req, res) => {
   try {
-    const deletedCategory = await Category.findByIdanDelete(req.params);
+    const categoryId = req.params.id;
+    const deletedCategory = await Category.findByIdanDelete(categoryId);
     if (!deletedCategory)
       return res.status(404).json({ message: "category not found" });
     res.status(200).json();

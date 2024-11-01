@@ -7,4 +7,13 @@ const authorSchema = new mongoose.Schema({
   deletedAt: { type: Date },
 });
 
+authorSchema.pre("save", function (next) {
+  this.updatedAt = Date.now();
+  next();
+});
+authorSchema.pre("findOneAndUpdate", function (next) {
+  this.set({ updatedAt: Date.now() });
+  next();
+});
+
 module.exports = mongoose.model("Author", authorSchema);

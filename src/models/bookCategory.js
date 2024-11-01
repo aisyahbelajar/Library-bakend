@@ -9,4 +9,13 @@ const BookCategorySchema = new mongoose.Schema({
   },
 });
 
+BookCategorySchema.pre("save", function (next) {
+  this.updatedAt = Date.now();
+  next();
+});
+BookCategorySchema.pre("findOneAndUpdate", function (next) {
+  this.set({ updatedAt: Date.now() });
+  next();
+});
+
 module.exports = mongoose.model("BookCategory", BookCategorySchema);

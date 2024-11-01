@@ -31,12 +31,13 @@ exports.createBook = async (req, res) => {
 
 exports.updateBookById = async (req, res) => {
   try {
-    const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, {
+    const bookId = req.params.id;
+    const updatedBook = await Book.findByIdAndUpdate(bookId, req.body, {
       new: true,
     });
     if (!updatedBook)
       return res.status(404).json({ message: "Book not found" });
-    res.status(200).json();
+    res.status(200).json(updatedBook);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -44,7 +45,8 @@ exports.updateBookById = async (req, res) => {
 
 exports.deleteBookById = async (req, res) => {
   try {
-    const deletedBook = await Book.findByIdAndDelete(req.params.id);
+    const bookId = req.params.id;
+    const deletedBook = await Book.findByIdAndDelete(bookId);
     if (!deletedBook)
       return res.status(404).json({ message: "Book not found" });
     res.status(200).json({ message: "Book deleted succesfully" });

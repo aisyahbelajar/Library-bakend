@@ -37,7 +37,8 @@ exports.createBorrower = async (req, res) => {
 // Memperbarui data peminjam
 exports.updateBorrower = async (req, res) => {
   try {
-    const borrower = await Borrower.findByIdAndUpdate(req.params.id, req.body, {
+    const borrowerId = req.params.id;
+    const borrower = await Borrower.findByIdAndUpdate(borrowerId, req.body, {
       new: true,
     });
     if (!borrower)
@@ -51,7 +52,8 @@ exports.updateBorrower = async (req, res) => {
 // Menghapus peminjam
 exports.deleteBorrower = async (req, res) => {
   try {
-    const borrower = await Borrower.findByIdAndDelete(req.params.id);
+    const borrowerId = req.params.id;
+    const borrower = await Borrower.findByIdAndDelete(borrowerId);
     if (!borrower)
       return res.status(404).json({ message: "Borrower not found" });
     res.status(200).json({ message: "Borrower deleted successfully" });

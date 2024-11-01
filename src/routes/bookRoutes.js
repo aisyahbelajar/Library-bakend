@@ -2,7 +2,7 @@ const express = require("express");
 const bookRoutes = express.Router();
 const bookController = require("../controllers/bookController");
 
-bookRoutes.get("/test/book", bookController.getAllBooks);
+bookRoutes.get("/test/books", bookController.getAllBooks);
 bookRoutes.get("/test/book/:id", bookController.getBookById);
 bookRoutes.post("/test/book", bookController.createBook);
 bookRoutes.put("/test/book/:id", bookController.updateBookById);
