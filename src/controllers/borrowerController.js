@@ -1,7 +1,5 @@
-// src/controllers/borrowerController.js
 const Borrower = require("../models/borrower");
 
-// Mendapatkan daftar peminjam
 exports.getAllBorrowers = async (req, res) => {
   try {
     const borrowers = await Borrower.find();
@@ -11,7 +9,6 @@ exports.getAllBorrowers = async (req, res) => {
   }
 };
 
-// Mendapatkan detail peminjam berdasarkan ID
 exports.getBorrowerById = async (req, res) => {
   try {
     const borrower = await Borrower.findById(req.params.id);
@@ -23,7 +20,6 @@ exports.getBorrowerById = async (req, res) => {
   }
 };
 
-// Menambah peminjam baru
 exports.createBorrower = async (req, res) => {
   try {
     const borrower = new Borrower(req.body);
@@ -34,7 +30,6 @@ exports.createBorrower = async (req, res) => {
   }
 };
 
-// Memperbarui data peminjam
 exports.updateBorrower = async (req, res) => {
   try {
     const borrowerId = req.params.id;
@@ -49,14 +44,13 @@ exports.updateBorrower = async (req, res) => {
   }
 };
 
-// Menghapus peminjam
 exports.deleteBorrower = async (req, res) => {
   try {
     const borrowerId = req.params.id;
     const borrower = await Borrower.findByIdAndDelete(borrowerId);
     if (!borrower)
       return res.status(404).json({ message: "Borrower not found" });
-    res.status(200).json({ message: "Borrower deleted successfully" });
+    res.status(200).json(borrower);
   } catch (error) {
     res.status(500).json({ message: "Error deleting borrower", error });
   }

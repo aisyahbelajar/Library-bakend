@@ -7,5 +7,9 @@ authorRoutes.get("/test/author/:id", authorController.getAuthorById);
 authorRoutes.post("/test/author", authorController.createAuthor);
 authorRoutes.put("/test/author/:id", authorController.updateAuthorById);
 authorRoutes.delete("/test/author/:id", authorController.deleteAuthorById);
+authorRoutes.post(
+  "/test/author/upload/:id",
+  authorController.uploadAuthorCover
+);
 
 module.exports = authorRoutes;

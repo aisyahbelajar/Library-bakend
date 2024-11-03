@@ -1,7 +1,5 @@
-// src/controllers/borrowedBookController.js
 const BorrowedBook = require("../models/borrowedBook");
 
-// Menambah data peminjaman buku
 exports.borrowBook = async (req, res) => {
   try {
     const borrowedBook = new BorrowedBook(req.body);
@@ -12,7 +10,6 @@ exports.borrowBook = async (req, res) => {
   }
 };
 
-// Mendapatkan daftar peminjaman buku yang masih aktif
 exports.getActiveBorrowedBooks = async (req, res) => {
   try {
     const borrowedBooks = await BorrowedBook.find({ returnAt: null })
@@ -26,21 +23,22 @@ exports.getActiveBorrowedBooks = async (req, res) => {
   }
 };
 
-// Menambah data pengembalian buku
 exports.returnBook = async (req, res) => {
   try {
-    const borrowedBook = await BorrowedBook.findById(req.body.borrowedBookId);
-    if (!borrowedBook)
+    const borrowedBook = await BorrowedBook.findByIdAndUpdate(req.params.id);
+    if (!borrowedBook) {
       return res
         .status(404)
-        .json({ message: "Borrowed book record not found" });
+        .json({ message: "Data peminjaman buku tidak ditemukan" });
+    }
 
-    borrowedBook.returnAt = new Date(); // Set waktu pengembalian
+    borrowedBook.returnAt = new Date();
     await borrowedBook.save();
+
     res
       .status(200)
-      .json({ message: "Book returned successfully", borrowedBook });
+      .json({ message: "Buku berhasil dikembalikan", borrowedBook });
   } catch (error) {
-    res.status(400).json({ message: "Error returning book", error });
+    res.status(400).json({ message: "Error saat mengembalikan buku", error });
   }
 };

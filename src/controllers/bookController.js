@@ -1,4 +1,4 @@
-const Book = require("../models/Book");
+const Book = require("../models/book");
 
 exports.getAllBooks = async (req, res) => {
   try {
@@ -52,5 +52,21 @@ exports.deleteBookById = async (req, res) => {
     res.status(200).json({ message: "Book deleted succesfully" });
   } catch (error) {
     res.status(500).json({ message: error.messsage });
+  }
+};
+
+exports.uploadBookCover = async (req, res) => {
+  try {
+    const uploadCover = await Book.findByIdAndUpdate(req.params.id);
+    if (!uploadCover) {
+      return res.status(404).json({ message: "Data Buku tidak ditemukan" });
+    }
+    const { profile } = req.body;
+    uploadCover.profile = profile;
+    await uploadCover.save();
+
+    res.status(200).json({ message: "Cover berhasil diupload", uploadCover });
+  } catch (error) {
+    res.status(400).json();
   }
 };

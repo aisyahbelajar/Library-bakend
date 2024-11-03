@@ -13,10 +13,10 @@ exports.getCategoryById = async (req, res) => {
   try {
     const category = await Category.findById(req.params.id);
     if (!category)
-      return res.status(404).json({ message: "Category tidak ditemukan" });
+      return res.status(404).json({ message: "category not found" });
     res.status(200).json(category);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -33,7 +33,7 @@ exports.createCategory = async (req, res) => {
 exports.updateCategoryById = async (req, res) => {
   try {
     const categoryId = req.params.id;
-    const updatedCategory = await Category.findByIdandUpdate(
+    const updatedCategory = await Category.findByIdAndUpdate(
       categoryId,
       req.body,
       {
@@ -51,10 +51,10 @@ exports.updateCategoryById = async (req, res) => {
 exports.deleteCategoryById = async (req, res) => {
   try {
     const categoryId = req.params.id;
-    const deletedCategory = await Category.findByIdanDelete(categoryId);
+    const deletedCategory = await Category.findByIdAndDelete(categoryId);
     if (!deletedCategory)
       return res.status(404).json({ message: "category not found" });
-    res.status(200).json();
+    res.status(200).json({ message: "succesfully deleted" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

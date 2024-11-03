@@ -15,6 +15,7 @@ const bookSchema = new mongoose.Schema({
     ref: "Author",
     required: true,
   },
+  profile: { type: String },
 });
 
 bookSchema.pre("save", function (next) {
