@@ -11,5 +11,6 @@ borrowedRoutes.post(
   "/test/borrow/book/return/:id",
   borrowedController.returnBook
 );
+borrowedRoutes.get("/test/borrow/book/penalty/:id", borrowedController.penalty);
 
 module.exports = borrowedRoutes;
